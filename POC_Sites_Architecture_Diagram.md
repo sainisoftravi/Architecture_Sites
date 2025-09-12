@@ -6,56 +6,51 @@ This diagram shows the parallel architecture for POC sites with 5 cameras each, 
 ## Architecture Diagram
 
 ```mermaid
-graph TB
-    subgraph "Site 1 - 5 Cameras"
-        C1_1[Camera 1<br/>RTMP Push]
-        C1_2[Camera 2<br/>RTMP Push]
-        C1_3[Camera 3<br/>RTMP Push]
-        C1_4[Camera 4<br/>RTMP Push]
-        C1_5[Camera 5<br/>RTMP Push]
-    end
+graph LR
+    subgraph "📹 CAMERAS - LEFT SIDE"
+        subgraph "Site 1 - 5 Cameras"
+            C1_1[📹 Camera 1<br/>RTMP Push]
+            C1_2[📹 Camera 2<br/>RTMP Push]
+            C1_3[📹 Camera 3<br/>RTMP Push]
+            C1_4[📹 Camera 4<br/>RTMP Push]
+            C1_5[📹 Camera 5<br/>RTMP Push]
+        end
 
-    subgraph "Site 2 - 5 Cameras"
-        C2_1[Camera 1<br/>RTMP Push]
-        C2_2[Camera 2<br/>RTMP Push]
-        C2_3[Camera 3<br/>RTMP Push]
-        C2_4[Camera 4<br/>RTMP Push]
-        C2_5[Camera 5<br/>RTMP Push]
-    end
+        subgraph "Site 2 - 5 Cameras"
+            C2_1[📹 Camera 1<br/>RTMP Push]
+            C2_2[📹 Camera 2<br/>RTMP Push]
+            C2_3[📹 Camera 3<br/>RTMP Push]
+            C2_4[📹 Camera 4<br/>RTMP Push]
+            C2_5[📹 Camera 5<br/>RTMP Push]
+        end
 
-    subgraph "Site N - 5 Cameras"
-        CN_1[Camera 1<br/>RTMP Push]
-        CN_2[Camera 2<br/>RTMP Push]
-        CN_3[Camera 3<br/>RTMP Push]
-        CN_4[Camera 4<br/>RTMP Push]
-        CN_5[Camera 5<br/>RTMP Push]
+        subgraph "Site N - 5 Cameras"
+            CN_1[📹 Camera 1<br/>RTMP Push]
+            CN_2[📹 Camera 2<br/>RTMP Push]
+            CN_3[📹 Camera 3<br/>RTMP Push]
+            CN_4[📹 Camera 4<br/>RTMP Push]
+            CN_5[📹 Camera 5<br/>RTMP Push]
+        end
     end
 
     subgraph "🖥️ SLAVE DESKTOP MACHINE"
         subgraph "Cupola Server Application"
-            subgraph "Factory 1 - RTMP/RTSP"
-                SF1[Factory 1<br/>RTMP from Cameras<br/>RTSP to Compressor]
-            end
-            subgraph "Factory 2 - RTSP"
-                SF2[Factory 2<br/>Compressed RTSP from Compressor]
-            end
+            SF1[Factory 1<br/>RTMP Factory<br/>All Cameras RTMP]
+            SF2[Factory 2<br/>RTSP Factory<br/>Compressed RTSP]
         end
     end
 
     subgraph "🖥️ COMPRESSOR DESKTOP MACHINE"
         subgraph "Stream Compression Application"
-            SC[Stream Compressor<br/>RTSP Input → Compressed RTSP Output]
+            SC_IN[RTSP Input<br/>From Slave Factory 1]
+            SC_OUT[RTSP Output<br/>Compressed Stream]
         end
     end
 
-    subgraph "🖥️ MASTER DESKTOP MACHINE"
+    subgraph "🖥️ MASTER DESKTOP MACHINE - RIGHT SIDE"
         subgraph "Cupola Server Application"
-            subgraph "Factory 1 - RTMP"
-                MF1[RTMP Factory<br/>From Slave Machine]
-            end
-            subgraph "Factory 2 - RTSP"
-                MF2[RTSP Factory<br/>From Slave Machine]
-            end
+            MF1[Factory 1<br/>RTMP Factory<br/>From Slave Factory 1]
+            MF2[Factory 2<br/>RTSP Factory<br/>From Slave Factory 2]
         end
     end
 
@@ -79,10 +74,13 @@ graph TB
     CN_5 -->|RTMP| SF1
 
     %% Slave Factory 1 generates RTSP URLs for Compressor
-    SF1 -->|RTSP URLs| SC
+    SF1 -->|RTSP URLs| SC_IN
+
+    %% Compressor internal flow
+    SC_IN -->|Process| SC_OUT
 
     %% Compressor outputs compressed RTSP to Slave Factory 2
-    SC -->|Compressed RTSP| SF2
+    SC_OUT -->|Compressed RTSP| SF2
 
     %% Slave to Master connections
     SF1 -->|RTMP Streams| MF1
@@ -97,7 +95,7 @@ graph TB
     classDef factory fill:#fce4ec,stroke:#880e4f,stroke-width:2px
 
     class C1_1,C1_2,C1_3,C1_4,C1_5,C2_1,C2_2,C2_3,C2_4,C2_5,CN_1,CN_2,CN_3,CN_4,CN_5 camera
-    class SC compressor
+    class SC_IN,SC_OUT compressor
     class SF1,SF2 slave
     class MF1,MF2 master
 ```
