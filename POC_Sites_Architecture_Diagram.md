@@ -46,17 +46,6 @@ graph LR
     C1_4 -->|RTMP| SF1
     C1_5 -->|RTMP| SF1
 
-    C2_1 -->|RTMP| SF1
-    C2_2 -->|RTMP| SF1
-    C2_3 -->|RTMP| SF1
-    C2_4 -->|RTMP| SF1
-    C2_5 -->|RTMP| SF1
-
-    CN_1 -->|RTMP| SF1
-    CN_2 -->|RTMP| SF1
-    CN_3 -->|RTMP| SF1
-    CN_4 -->|RTMP| SF1
-    CN_5 -->|RTMP| SF1
 
     %% Slave Factory 1 generates RTSP URLs for Compressor
     SF1 -->|RTSP URLs| SC_IN
@@ -122,4 +111,5 @@ graph LR
 3. **Stream Compressor** → **Slave Factory 2** (Compressed RTSP Output)
 4. **Slave Factory 1** → **Master Factory 1** (RTMP from Slave)
 5. **Slave Factory 2** → **Master Factory 2** (RTSP from Slave)
+
 
