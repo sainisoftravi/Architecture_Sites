@@ -7,7 +7,7 @@ This diagram shows the parallel architecture for POC sites with 5 cameras each, 
 
 ```mermaid
 graph LR
-    subgraph "📹 CAMERAS - LEFT SIDE"
+    subgraph "📹 All Cameras"
         subgraph "Site 1 - 5 Cameras"
             C1_1[📹 Camera 1<br/>RTMP Push]
             C1_2[📹 Camera 2<br/>RTMP Push]
@@ -111,5 +111,6 @@ graph LR
 3. **Stream Compressor** → **Slave Factory 2** (Compressed RTSP Output)
 4. **Slave Factory 1** → **Master Factory 1** (RTMP from Slave)
 5. **Slave Factory 2** → **Master Factory 2** (RTSP from Slave)
+
 
 
