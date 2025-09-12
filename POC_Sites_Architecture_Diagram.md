@@ -31,25 +31,31 @@ graph TB
         CN_5[Camera 5<br/>RTMP Push]
     end
 
-    subgraph "Slave Machine - Cupola Server"
-        subgraph "Factory 1 - RTMP/RTSP"
-            SF1[Factory 1<br/>RTMP from Cameras<br/>RTSP to Compressor]
-        end
-        subgraph "Factory 2 - RTSP"
-            SF2[Factory 2<br/>Compressed RTSP from Compressor]
+    subgraph "🖥️ SLAVE DESKTOP MACHINE"
+        subgraph "Cupola Server Application"
+            subgraph "Factory 1 - RTMP/RTSP"
+                SF1[Factory 1<br/>RTMP from Cameras<br/>RTSP to Compressor]
+            end
+            subgraph "Factory 2 - RTSP"
+                SF2[Factory 2<br/>Compressed RTSP from Compressor]
+            end
         end
     end
 
-    subgraph "Stream Compressor Machine"
-        SC[Stream Compressor<br/>RTSP Input → Compressed RTSP Output]
+    subgraph "🖥️ COMPRESSOR DESKTOP MACHINE"
+        subgraph "Stream Compression Application"
+            SC[Stream Compressor<br/>RTSP Input → Compressed RTSP Output]
+        end
     end
 
-    subgraph "Master Machine - Cupola Server"
-        subgraph "Factory 1 - RTMP"
-            MF1[RTMP Factory<br/>From Slave Machine]
-        end
-        subgraph "Factory 2 - RTSP"
-            MF2[RTSP Factory<br/>From Slave Machine]
+    subgraph "🖥️ MASTER DESKTOP MACHINE"
+        subgraph "Cupola Server Application"
+            subgraph "Factory 1 - RTMP"
+                MF1[RTMP Factory<br/>From Slave Machine]
+            end
+            subgraph "Factory 2 - RTSP"
+                MF2[RTSP Factory<br/>From Slave Machine]
+            end
         end
     end
 
@@ -84,6 +90,7 @@ graph TB
 
     %% Styling
     classDef camera fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef desktop fill:#f0f0f0,stroke:#333,stroke-width:3px
     classDef compressor fill:#fff3e0,stroke:#e65100,stroke-width:2px
     classDef slave fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     classDef master fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
@@ -101,17 +108,20 @@ graph TB
 - **5 cameras per site** (Site 1, Site 2, ..., Site N)
 - Each camera pushes **RTMP streams** directly to Slave
 
-### 2. Slave Machine - Cupola Server
+### 2. 🖥️ SLAVE DESKTOP MACHINE
+- **Cupola Server Application** running on desktop machine
 - **Factory 1 (RTMP/RTSP)**: Receives direct RTMP streams from cameras and generates RTSP URLs for Compressor
 - **Factory 2 (RTSP)**: Receives compressed RTSP streams from Compressor
 - Acts as the primary processing unit
 
-### 3. Stream Compressor Machine
+### 3. 🖥️ COMPRESSOR DESKTOP MACHINE
+- **Stream Compression Application** running on desktop machine
 - **Input**: RTSP URLs from Slave Factory 1
 - **Process**: Takes RTSP input and outputs compressed RTSP
 - **Output**: Compressed RTSP streams to Slave Factory 2
 
-### 4. Master Machine - Cupola Server
+### 4. 🖥️ MASTER DESKTOP MACHINE
+- **Cupola Server Application** running on desktop machine
 - **Factory 1 (RTMP)**: Receives RTMP streams from Slave Machine
 - **Factory 2 (RTSP)**: Receives RTSP streams from Slave Machine
 - Acts as the secondary processing unit
