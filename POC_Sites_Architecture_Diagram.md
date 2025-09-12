@@ -16,21 +16,6 @@ graph LR
             C1_5[📹 Camera 5<br/>RTMP Push]
         end
 
-        subgraph "Site 2 - 5 Cameras"
-            C2_1[📹 Camera 1<br/>RTMP Push]
-            C2_2[📹 Camera 2<br/>RTMP Push]
-            C2_3[📹 Camera 3<br/>RTMP Push]
-            C2_4[📹 Camera 4<br/>RTMP Push]
-            C2_5[📹 Camera 5<br/>RTMP Push]
-        end
-
-        subgraph "Site N - 5 Cameras"
-            CN_1[📹 Camera 1<br/>RTMP Push]
-            CN_2[📹 Camera 2<br/>RTMP Push]
-            CN_3[📹 Camera 3<br/>RTMP Push]
-            CN_4[📹 Camera 4<br/>RTMP Push]
-            CN_5[📹 Camera 5<br/>RTMP Push]
-        end
     end
 
     subgraph "🖥️ SLAVE DESKTOP MACHINE"
@@ -137,3 +122,4 @@ graph LR
 3. **Stream Compressor** → **Slave Factory 2** (Compressed RTSP Output)
 4. **Slave Factory 1** → **Master Factory 1** (RTMP from Slave)
 5. **Slave Factory 2** → **Master Factory 2** (RTSP from Slave)
+
